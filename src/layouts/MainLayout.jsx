@@ -1,5 +1,18 @@
+import { Outlet } from "react-router-dom";
+import Topbar from "./shared/Topbar";
+
 const MainLayout = () => {
-  return <div>MainLayout</div>;
+  return (
+    <div className="min-h-screen w-full overflow-x-hidden bg-gray-200 text-gray-800 dark:bg-gray-900 dark:text-gray-50">
+      <header>
+        <Topbar />
+      </header>
+      <aside></aside>
+      <main>
+        <Outlet />
+      </main>
+    </div>
+  );
 };
 
 export default MainLayout;
