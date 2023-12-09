@@ -35,3 +35,15 @@
     @apply px-2.5 text-body-6;
   }
 }
+
+@layer components {
+  .input {
+    @apply focus block w-full rounded border border-gray-400 bg-gray-300 px-3 py-2 text-body-5 placeholder:text-gray-500 dark:border-gray-700 dark:bg-gray-900;
+  }
+}
+
+@layer components {
+  .link {
+    @apply text-blue-500 underline;
+  }
+}

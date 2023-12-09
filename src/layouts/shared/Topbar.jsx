@@ -2,6 +2,7 @@ import { LuMenuSquare, LuMoon, LuSun, LuMail } from "react-icons/lu";
 import useStateData from "../../hooks/useStateData";
 import siteLogo from "../../assets/img/icon/invoice-logo.png";
 import { Link } from "react-router-dom";
+import { Button } from "keep-react";
 
 const Topbar = () => {
   const { theme, handleThemeChange } = useStateData();
@@ -16,7 +17,9 @@ const Topbar = () => {
           src={siteLogo}
           alt="site logo"
         />
-        <h4 className="select-none text-xl font-bold">DTR - Invoice</h4>
+        <h4 className="hidden select-none text-xl font-bold sm:block">
+          DTR - Invoice
+        </h4>
       </div>
       <div className="flex items-center gap-2">
         <button
@@ -34,10 +37,10 @@ const Topbar = () => {
         <button type="button" className="btn-icon">
           <LuMail size={25} strokeWidth={1} />
         </button>
-        <Link to="/login" className="btn btn-pri">
+        <Link to="/login" className="btn btn-pri hidden">
           Login
         </Link>
-        <Link to="/register" className="btn btn-pri-outline">
+        <Link to="/register" className="btn btn-pri-outline max-sm:hidden">
           Register
         </Link>
       </div>
