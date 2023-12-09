@@ -10,7 +10,28 @@
 }
 
 @layer components {
+  .focus {
+    @apply focus:outline-dashed focus:outline-2 focus:outline-offset-2 focus:outline-sky-500;
+  }
+}
+
+@layer components {
   .btn-icon {
-    @apply cursor-pointer rounded-md border border-gray-400 bg-gray-200 p-1 duration-100 hover:bg-gray-300 focus:outline-dashed focus:outline-2 focus:outline-offset-2 focus:outline-sky-500 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600;
+    @apply focus cursor-pointer rounded-md border border-gray-400 bg-gray-200 p-1 duration-75 hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply focus inline-flex cursor-pointer items-center justify-center gap-1 rounded px-4 py-1 text-body-4 font-medium text-white duration-75 active:focus:scale-95 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-pri {
+    @apply border border-green-600 bg-green-700 text-white hover:bg-green-600 disabled:hover:bg-green-700;
+  }
+  .btn-pri-outline {
+    @apply border border-green-500 text-green-500 hover:bg-green-700 hover:text-white;
+  }
+  .btn-sm {
+    @apply px-2.5 text-body-6;
   }
 }

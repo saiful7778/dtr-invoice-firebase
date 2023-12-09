@@ -1,13 +1,14 @@
 import { LuMenuSquare, LuMoon, LuSun, LuMail } from "react-icons/lu";
 import useStateData from "../../hooks/useStateData";
 import siteLogo from "../../assets/img/icon/invoice-logo.png";
+import { Link } from "react-router-dom";
 
 const Topbar = () => {
   const { theme, handleThemeChange } = useStateData();
   return (
     <div className="con-bg fixed left-0 top-0 z-[1000] flex h-14 w-full items-center justify-between gap-2 border-b p-2">
       <div className="flex items-center gap-2">
-        <button className="btn-icon">
+        <button className="btn-icon" type="button">
           <LuMenuSquare size={25} strokeWidth={1} />
         </button>
         <img
@@ -22,6 +23,7 @@ const Topbar = () => {
           onClick={handleThemeChange}
           title="Change theme"
           className="btn-icon"
+          type="button"
         >
           {theme === "dark" ? (
             <LuMoon size={25} strokeWidth={1} />
@@ -29,9 +31,15 @@ const Topbar = () => {
             <LuSun size={25} strokeWidth={1} />
           )}
         </button>
-        <button className="btn-icon">
+        <button type="button" className="btn-icon">
           <LuMail size={25} strokeWidth={1} />
         </button>
+        <Link to="/login" className="btn btn-pri">
+          Login
+        </Link>
+        <Link to="/register" className="btn btn-pri-outline">
+          Register
+        </Link>
       </div>
     </div>
   );
