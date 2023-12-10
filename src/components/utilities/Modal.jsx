@@ -13,7 +13,7 @@ const ModalComponent = ({ show, children }) => {
         role="dialog"
         aria-hidden={show}
       >
-        <div className="con-bg border-color relative w-full max-w-xl rounded-lg border p-4 shadow">
+        <div className="con-bg border-color relative m-2 w-full max-w-xl rounded-lg border p-4 shadow">
           {children}
         </div>
       </div>
@@ -28,7 +28,7 @@ ModalComponent.propTypes = {
 };
 
 const ModalBody = ({ children }) => {
-  return <div>{children}</div>;
+  return <div className="mx-auto w-fit py-10 text-center">{children}</div>;
 };
 
 ModalBody.propTypes = {
