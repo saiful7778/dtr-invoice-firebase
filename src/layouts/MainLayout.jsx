@@ -8,7 +8,7 @@ const MainLayout = () => {
         <Topbar />
       </header>
       <aside></aside>
-      <main className="mt-14 w-full p-1">
+      <main className="mt-14 w-full p-4">
         <Outlet />
       </main>
     </div>

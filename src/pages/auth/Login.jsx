@@ -9,7 +9,11 @@ const Login = () => {
       <h3 className="text-center text-2xl font-bold md:text-4xl">
         Login your account
       </h3>
-      <form onSubmit={handleSubmit} className="mt-4 space-y-2">
+      <form
+        autoComplete="off"
+        onSubmit={handleSubmit}
+        className="mt-4 space-y-2"
+      >
         <input className="input" placeholder="Email address" type="email" />
         <input className="input" placeholder="Password" type="password" />
         <button className="text-body-5 text-gray-400" type="button">
