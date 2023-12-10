@@ -2,9 +2,13 @@ import { LuMenuSquare, LuMoon, LuSun, LuMail } from "react-icons/lu";
 import useStateData from "../../hooks/useStateData";
 import siteLogo from "../../assets/img/icon/invoice-logo.png";
 import { Link } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
+import { Avatar, Popover } from "keep-react";
+import PropTypes from "prop-types";
 
 const Topbar = () => {
   const { theme, handleThemeChange } = useStateData();
+  const { userData, logout } = useAuth();
   return (
     <div className="con-bg fixed left-0 top-0 z-[100] flex h-14 w-full items-center justify-between gap-2 border-b p-2 shadow">
       <div className="flex items-center gap-2">
@@ -37,14 +41,68 @@ const Topbar = () => {
         <button type="button" className="btn-icon">
           <LuMail size={25} strokeWidth={1} />
         </button>
-        <Link to="/login" className="btn btn-pri hidden">
-          Login
-        </Link>
-        <Link to="/register" className="btn btn-pri-outline max-sm:hidden">
-          Register
-        </Link>
+        {userData ? (
+          <UserLogged user={userData} logout={logout} />
+        ) : (
+          <UserLogout />
+        )}
       </div>
     </div>
+  );
+};
+
+const UserLogged = ({ user, logout }) => {
+  const handleLogout = () => {
+    logout();
+  };
+  return (
+    <Popover
+      className="con-bg border-color space-y-2 whitespace-nowrap rounded-lg border p-3 shadow"
+      showDismissIcon={false}
+      showArrow={false}
+      position="bottom-end"
+      additionalContent={
+        <>
+          <div>{user.displayName}</div>
+          <div>
+            <Link to="/dashboard">Dashboard</Link>
+          </div>
+          <button
+            onClick={handleLogout}
+            className="btn btn-pri btn-sm w-full"
+            type="button"
+          >
+            Logout
+          </button>
+        </>
+      }
+    >
+      <Avatar
+        className="cursor-pointer rounded-full bg-gray-200"
+        shape="circle"
+        size="md"
+        bordered={true}
+        img={user?.photoURL ? user?.photoURL : ""}
+      />
+    </Popover>
+  );
+};
+
+UserLogged.propTypes = {
+  user: PropTypes.object,
+  logout: PropTypes.func,
+};
+
+const UserLogout = () => {
+  return (
+    <>
+      <Link to="/login" className="btn btn-pri hidden">
+        Login
+      </Link>
+      <Link to="/register" className="btn btn-pri-outline max-sm:hidden">
+        Register
+      </Link>
+    </>
   );
 };
 
