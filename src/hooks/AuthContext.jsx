@@ -1,12 +1,14 @@
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  sendEmailVerification,
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
 import PropTypes from "prop-types";
 import { createContext, useState, useEffect } from "react";
 import { auth } from "../firebase";
+import Alert from "../config/Alert";
 
 export const AuthContextData = createContext(null);
 
@@ -25,15 +27,29 @@ const AuthContext = ({ children }) => {
   };
 
   const logout = () => {
-    setLoader(true);
     return signOut(auth);
   };
 
   useEffect(() => {
-    const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unSubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      setLoader(false);
+      setUserData(currentUser);
       if (currentUser) {
-        setUserData(currentUser);
-        setLoader(false);
+        if (!currentUser?.emailVerified) {
+          await logout();
+          const { isConfirmed } = await Alert.fire({
+            icon: "warning",
+            title: "Email not verified!",
+            text: "Verify your email address.",
+            showCancelButton: true,
+            confirmButtonText: "Send email",
+            cancelButtonText: "Cancel",
+            reverseButtons: true,
+          });
+          if (isConfirmed) {
+            sendEmailVerification(currentUser);
+          }
+        }
       }
     });
     return () => {

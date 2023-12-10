@@ -16,14 +16,16 @@ const Topbar = () => {
           <LuMenuSquare size={25} strokeWidth={1} />
         </button>
 
-        <img
-          className="border-color h-9 w-9 rounded-full border bg-white p-0.5 shadow"
-          src={siteLogo}
-          alt="site logo"
-        />
-        <h4 className="hidden select-none text-xl font-bold sm:block">
-          DTR - Invoice
-        </h4>
+        <Link className="flex items-center gap-2" to="/">
+          <img
+            className="border-color h-9 w-9 rounded-full border bg-white p-0.5 shadow"
+            src={siteLogo}
+            alt="site logo"
+          />
+          <h4 className="hidden select-none text-xl font-bold sm:block">
+            DTR - Invoice
+          </h4>
+        </Link>
       </div>
       <div className="flex items-center gap-2">
         <button

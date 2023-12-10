@@ -7,9 +7,10 @@ import { Field, Form, Formik } from "formik";
 import { loginSchema } from "../../schemas/auth";
 import errorStatus from "../../utilities/errorStatus";
 import Alert from "../../config/Alert";
+import { sendEmailVerification } from "firebase/auth";
 
 const Login = () => {
-  const { login } = useAuth();
+  const { login, logout } = useAuth();
   const [spinner, setSpinner] = useState(false);
   const [showPass, setShowPass] = useState(false);
 
@@ -22,10 +23,26 @@ const Login = () => {
     setSpinner(true);
     try {
       const { user } = await login(e.email, e.password);
-      Alert.fire({
-        icon: "success",
-        title: `Welcome, ${user.displayName}`,
-      });
+      if (!user?.emailVerified) {
+        await logout();
+        const { isConfirmed } = await Alert.fire({
+          icon: "warning",
+          title: "Email not verified!",
+          text: "Verify your email address.",
+          showCancelButton: true,
+          confirmButtonText: "Send Email",
+          cancelButtonText: "Cancel",
+          reverseButtons: true,
+        });
+        if (isConfirmed) {
+          sendEmailVerification(user);
+        }
+      } else {
+        Alert.fire({
+          icon: "success",
+          title: `Welcome, ${user.displayName}`,
+        });
+      }
       setSpinner(false);
       resetForm();
     } catch (err) {
