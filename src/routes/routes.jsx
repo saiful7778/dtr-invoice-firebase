@@ -3,6 +3,7 @@ import MainLayout from "../layouts/MainLayout";
 import Invoice from "../pages/Invoice";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
+import Terms from "../pages/info/Terms";
 
 const route = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const route = createBrowserRouter([
       {
         path: "/register",
         element: <Register />,
+      },
+      {
+        path: "/terms_and_conditions",
+        element: <Terms />,
       },
     ],
   },
