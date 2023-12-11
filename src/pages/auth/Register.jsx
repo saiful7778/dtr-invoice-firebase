@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Spinner } from "keep-react";
 import { Link } from "react-router-dom";
 import { Field, Form, Formik } from "formik";
@@ -11,9 +11,11 @@ import useAuth from "../../hooks/useAuth";
 import { sendEmailVerification, updateProfile } from "firebase/auth";
 import Alert from "../../config/Alert";
 import errorStatus from "../../utilities/errorStatus";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Register = () => {
   const { register } = useAuth();
+  const recaptchaRef = useRef(null);
   const [spinner, setSpinner] = useState(false);
   const [showPass, setShowPass] = useState(false);
   const [profileImg, setProfileImg] = useState(null);
@@ -49,6 +51,14 @@ const Register = () => {
 
   const submitData = async (e, { resetForm }) => {
     setSpinner(true);
+    const captchaValue = recaptchaRef.current.getValue();
+    if (!captchaValue) {
+      Alert.fire({
+        icon: "warning",
+        text: "Please verify the reCAPTCHA!",
+      });
+      return setSpinner(false);
+    }
     const reset = handleReset(resetForm);
     if (profileImg !== null && showProfileImg !== null) {
       const imgRef = ref(
@@ -255,6 +265,10 @@ const Register = () => {
               </div>
             )}
           </Field>
+          <ReCAPTCHA
+            ref={recaptchaRef}
+            sitekey={import.meta.env.VITE_SITE_KEY}
+          />
           <button
             disabled={spinner}
             className="btn btn-pri w-full"

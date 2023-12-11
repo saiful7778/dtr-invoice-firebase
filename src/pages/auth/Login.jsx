@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Spinner } from "keep-react";
 import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
@@ -9,10 +9,12 @@ import errorStatus from "../../utilities/errorStatus";
 import Alert from "../../config/Alert";
 import { sendEmailVerification } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Login = () => {
   const navigate = useNavigate();
   const { login, logout } = useAuth();
+  const recaptchaRef = useRef(null);
   const [spinner, setSpinner] = useState(false);
   const [showPass, setShowPass] = useState(false);
 
@@ -23,6 +25,14 @@ const Login = () => {
 
   const submitData = async (e, { resetForm }) => {
     setSpinner(true);
+    const captchaValue = recaptchaRef.current.getValue();
+    if (!captchaValue) {
+      Alert.fire({
+        icon: "warning",
+        text: "Please verify the reCAPTCHA!",
+      });
+      return setSpinner(false);
+    }
     try {
       const { user } = await login(e.email, e.password);
       if (!user?.emailVerified) {
@@ -124,6 +134,10 @@ const Login = () => {
           >
             Forget password?
           </button>
+          <ReCAPTCHA
+            ref={recaptchaRef}
+            sitekey={import.meta.env.VITE_SITE_KEY}
+          />
           <button
             disabled={spinner}
             className="btn btn-pri w-full"
