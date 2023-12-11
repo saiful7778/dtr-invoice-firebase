@@ -66,7 +66,9 @@ const Login = () => {
             icon: "success",
             title: `Welcome, ${user.displayName}`,
           });
-          navigate(location.state ? location.state.from.pathname : "/");
+          navigate(
+            location.state ? location.state.from.location.pathname : "/",
+          );
         }
       } else {
         Alert.fire({

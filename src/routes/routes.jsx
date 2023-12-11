@@ -9,6 +9,7 @@ import Terms from "../pages/info/Terms";
 import Dashboard from "../pages/Dashboard";
 import ErrorPage from "../pages/ErrorPage";
 import Profile from "../pages/user/Profile";
+import PrivateRoute from "./PrivateRoute";
 
 const route = createBrowserRouter([
   {
@@ -26,7 +27,11 @@ const route = createBrowserRouter([
       },
       {
         path: "/user/profile",
-        element: <Profile />,
+        element: (
+          <PrivateRoute>
+            <Profile />
+          </PrivateRoute>
+        ),
       },
     ],
   },
