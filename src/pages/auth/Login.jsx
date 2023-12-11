@@ -34,25 +34,43 @@ const Login = () => {
       return setSpinner(false);
     }
     try {
-      const { user } = await login(e.email, e.password);
-      if (!user?.emailVerified) {
-        await logout();
-        const { isConfirmed } = await Alert.fire({
-          icon: "warning",
-          title: "Email not verified!",
-          text: "Verify your email address.",
-          showCancelButton: true,
-          confirmButtonText: "Send Email",
-          cancelButtonText: "Cancel",
-          reverseButtons: true,
-        });
-        if (isConfirmed) {
-          sendEmailVerification(user);
+      const res = await fetch(
+        "https://dtr-invoice-server.vercel.app/captcha/verify",
+        {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({ captchaValue }),
+        },
+      );
+      const data = await res.json();
+      if (data?.success) {
+        const { user } = await login(e.email, e.password);
+        if (!user?.emailVerified) {
+          await logout();
+          const { isConfirmed } = await Alert.fire({
+            icon: "warning",
+            title: "Email not verified!",
+            text: "Verify your email address.",
+            showCancelButton: true,
+            confirmButtonText: "Send Email",
+            cancelButtonText: "Cancel",
+            reverseButtons: true,
+          });
+          if (isConfirmed) {
+            sendEmailVerification(user);
+          }
+        } else {
+          Alert.fire({
+            icon: "success",
+            title: `Welcome, ${user.displayName}`,
+          });
         }
       } else {
         Alert.fire({
-          icon: "success",
-          title: `Welcome, ${user.displayName}`,
+          icon: "error",
+          text: "Invalid reCaptcha!",
         });
       }
       setSpinner(false);

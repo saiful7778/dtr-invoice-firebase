@@ -59,48 +59,72 @@ const Register = () => {
       });
       return setSpinner(false);
     }
-    const reset = handleReset(resetForm);
-    if (profileImg !== null && showProfileImg !== null) {
-      const imgRef = ref(
-        storage,
-        `users/profileImages/${e.email}_profile_image.png`,
-      );
-
-      const uploadTask = uploadBytesResumable(imgRef, profileImg, {
-        contentType: "image/png",
-      });
-
-      uploadTask.on(
-        "state_changed",
-        () => {},
-        () => {},
-        async () => {
-          try {
-            const profileLink = await getDownloadURL(uploadTask.snapshot.ref);
-            const userData = {
-              profileLink,
-              fullName: e.fullName,
-              email: e.email,
-              pass: e.password,
-            };
-            userRegister(register, userData, reset);
-          } catch (err) {
-            console.error(err);
-            Alert.fire({
-              icon: "error",
-              text: err,
-            });
-            reset();
-          }
+    try {
+      const res = await fetch(
+        "https://dtr-invoice-server.vercel.app/captcha/verify",
+        {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({ captchaValue }),
         },
       );
-    } else {
-      const userData = {
-        fullName: e.fullName,
-        email: e.email,
-        pass: e.password,
-      };
-      userRegister(register, userData, reset);
+      const data = await res.json();
+      if (data?.success) {
+        const reset = handleReset(resetForm);
+        if (profileImg !== null && showProfileImg !== null) {
+          const imgRef = ref(
+            storage,
+            `users/profileImages/${e.email}_profile_image.png`,
+          );
+
+          const uploadTask = uploadBytesResumable(imgRef, profileImg, {
+            contentType: "image/png",
+          });
+
+          uploadTask.on(
+            "state_changed",
+            () => {},
+            () => {},
+            async () => {
+              try {
+                const profileLink = await getDownloadURL(
+                  uploadTask.snapshot.ref,
+                );
+                const userData = {
+                  profileLink,
+                  fullName: e.fullName,
+                  email: e.email,
+                  pass: e.password,
+                };
+                userRegister(register, userData, reset);
+              } catch (err) {
+                console.error(err);
+                Alert.fire({
+                  icon: "error",
+                  text: err,
+                });
+                reset();
+              }
+            },
+          );
+        } else {
+          const userData = {
+            fullName: e.fullName,
+            email: e.email,
+            pass: e.password,
+          };
+          userRegister(register, userData, reset);
+        }
+      } else {
+        Alert.fire({
+          icon: "error",
+          text: "Invalid reCaptcha!",
+        });
+      }
+    } catch (err) {
+      console.error(err);
     }
   };
 
