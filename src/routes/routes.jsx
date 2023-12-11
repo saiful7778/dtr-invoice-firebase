@@ -7,10 +7,12 @@ import Reset from "../pages/auth/Reset";
 import Register from "../pages/auth/Register";
 import Terms from "../pages/info/Terms";
 import Dashboard from "../pages/Dashboard";
+import ErrorPage from "../pages/ErrorPage";
 
 const route = createBrowserRouter([
   {
     path: "/",
+    errorElement: <ErrorPage />,
     element: <MainLayout />,
     children: [
       {
@@ -25,6 +27,7 @@ const route = createBrowserRouter([
   },
   {
     path: "/manage",
+    errorElement: <ErrorPage />,
     element: <AuthLayout />,
     children: [
       {
