@@ -14,7 +14,7 @@ const SidebarComp = () => {
 
   return (
     <div
-      className={`con-bg border-color fixed left-0 top-0 flex min-h-screen flex-col justify-between whitespace-nowrap border-r pt-14 shadow duration-300 ${
+      className={`con-bg border-color fixed left-0 top-0 z-[100] flex min-h-screen flex-col justify-between whitespace-nowrap border-r pt-14 shadow duration-300 ${
         showSidebar ? "md:w-56" : "max-sm:-left-full md:w-[60px]"
       }`}
     >

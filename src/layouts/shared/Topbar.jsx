@@ -12,7 +12,7 @@ const Topbar = () => {
   const location = useLocation();
   const { userData, logout } = useAuth();
   return (
-    <div className="con-bg fixed left-0 top-0 z-[100] flex h-14 w-full items-center justify-between gap-2 border-b p-2">
+    <div className="con-bg fixed left-0 top-0 z-[110] flex h-14 w-full items-center justify-between gap-2 border-b p-2">
       <div className="flex items-center gap-2">
         {!location.pathname.includes("manage") && (
           <button onClick={handleSiderBar} className="btn-icon" type="button">

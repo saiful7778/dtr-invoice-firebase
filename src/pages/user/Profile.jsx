@@ -1,50 +1,52 @@
 import { doc, getDoc } from "firebase/firestore";
-import { useEffect, useState } from "react";
 import { db } from "../../firebase";
 import useAuth from "../../hooks/useAuth";
 import { Avatar, Spinner } from "keep-react";
+import { FaUserAstronaut } from "react-icons/fa";
+import { useQuery } from "@tanstack/react-query";
 
 const Profile = () => {
   const { userData } = useAuth();
-  const [user, setUser] = useState({});
-  const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
-      try {
-        if (userData) {
-          const docRef = userData?.uid.toString();
-          const data = await getDoc(doc(db, "users", userData.uid));
-          if (data.exists()) {
-            setUser(data.data());
-          } else {
-            setUser({});
-          }
-        }
-      } catch (err) {
-        console.log(err);
-      }
-      setLoading(false);
-    })();
-  }, [userData]);
+  const { data: user, isLoading } = useQuery({
+    queryKey: [userData.displayName, "profile"],
+    queryFn: async () => {
+      const data = await getDoc(doc(db, "users", userData.uid));
+      if (data.exists()) return data.data();
+      return {};
+    },
+  });
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center">
         <Spinner color="info" size="xl" />
       </div>
     );
   }
-  console.log(user);
+
+  if (Object.keys(user).length === 0) {
+    return <div className="text-center text-3xl font-bold">No Data Found!</div>;
+  }
+
+  const { userPhoto, userName, userEmail, userRole } = user;
   return (
-    <div>
+    <div className="mx-auto w-fit text-center">
       <Avatar
-        className="cursor-pointer"
+        className="mx-auto mb-6 w-fit cursor-pointer"
         shape="circle"
-        size="md"
+        size="2xl"
         bordered={true}
-        img={user?.photoURL}
+        img={userPhoto}
       />
+      <h3 className="text-3xl font-bold">{userName}</h3>
+      <p className="text-gray-500">{userEmail}</p>
+      <div className="mt-4 flex items-center justify-center gap-2 font-medium">
+        <div className="con-bg border-color rounded border px-2 py-1.5">
+          <FaUserAstronaut />
+        </div>
+        <span>:</span>
+        <div className="capitalize">{userRole}</div>
+      </div>
     </div>
   );
 };
