@@ -9,7 +9,7 @@ const ProfilePopover = ({ user, logout }) => {
     <ul className="space-y-1">
       <li className="border-color mb-2 border-b pb-2">{user?.displayName}</li>
       <li>
-        <Link to="/manage/profile">Profile</Link>
+        <Link to="/user/profile">Profile</Link>
       </li>
       <li>
         <button

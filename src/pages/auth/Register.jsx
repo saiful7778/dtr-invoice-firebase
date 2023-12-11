@@ -12,7 +12,7 @@ import { sendEmailVerification, updateProfile } from "firebase/auth";
 import Alert from "../../config/Alert";
 import errorStatus from "../../utilities/errorStatus";
 import ReCAPTCHA from "react-google-recaptcha";
-import { addDoc, collection } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 
 const Register = () => {
   const { register } = useAuth();
@@ -325,14 +325,15 @@ const userRegister = async (register, userData, reset, navigate) => {
       displayName: userData.fullName,
       photoURL: userData?.profileLink,
     });
-    await sendEmailVerification(user);
     const data = {
       userName: userData.fullName,
       userEmail: userData.email,
-      userPhoto: userData?.profileLink,
+      userPhoto: userData?.profileLink || null,
       userRole: "user",
     };
-    await addDoc(collection(db, "users"), data);
+    const docId = user?.uid.toString();
+    await setDoc(doc(db, "users", docId), data);
+    await sendEmailVerification(user);
     Alert.fire({
       icon: "success",
       title: "Account is created!",
@@ -341,6 +342,7 @@ const userRegister = async (register, userData, reset, navigate) => {
     reset();
     navigate("/");
   } catch (err) {
+    console.log(err);
     errorStatus(err);
     reset();
   }

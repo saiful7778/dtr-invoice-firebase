@@ -8,6 +8,7 @@ import Register from "../pages/auth/Register";
 import Terms from "../pages/info/Terms";
 import Dashboard from "../pages/Dashboard";
 import ErrorPage from "../pages/ErrorPage";
+import Profile from "../pages/user/Profile";
 
 const route = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const route = createBrowserRouter([
       {
         path: "/invoice",
         element: <Invoice />,
+      },
+      {
+        path: "/user/profile",
+        element: <Profile />,
       },
     ],
   },
