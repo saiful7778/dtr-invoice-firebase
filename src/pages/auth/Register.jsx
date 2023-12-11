@@ -5,13 +5,14 @@ import { Field, Form, Formik } from "formik";
 import { registerSchema } from "../../schemas/auth";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import { FaUserAstronaut } from "react-icons/fa";
-import { storage } from "../../firebase";
+import { db, storage } from "../../firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import useAuth from "../../hooks/useAuth";
 import { sendEmailVerification, updateProfile } from "firebase/auth";
 import Alert from "../../config/Alert";
 import errorStatus from "../../utilities/errorStatus";
 import ReCAPTCHA from "react-google-recaptcha";
+import { addDoc, collection } from "firebase/firestore";
 
 const Register = () => {
   const { register } = useAuth();
@@ -325,6 +326,13 @@ const userRegister = async (register, userData, reset, navigate) => {
       photoURL: userData?.profileLink,
     });
     await sendEmailVerification(user);
+    const data = {
+      userName: userData.fullName,
+      userEmail: userData.email,
+      userPhoto: userData?.profileLink,
+      userRole: "user",
+    };
+    await addDoc(collection(db, "users"), data);
     Alert.fire({
       icon: "success",
       title: "Account is created!",
