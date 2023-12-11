@@ -17,28 +17,26 @@ const SidebarComp = () => {
 
   return (
     <div
-      className={`con-bg border-color   fixed left-0 top-14 flex h-[92vh] flex-col justify-between whitespace-nowrap border-r shadow duration-300 ${
+      className={`con-bg border-color fixed left-0 top-0 flex min-h-screen flex-col justify-between whitespace-nowrap border-r pt-14 shadow duration-300 ${
         showSidebar ? "md:w-56" : "max-sm:-left-full md:w-[60px]"
       }`}
     >
-      <div>
-        <Sidebar>
-          <SidebarItem
-            path="/"
-            textShow={showSidebar}
-            icon={<LuLayoutDashboard size={20} />}
-          >
-            Deshboard
-          </SidebarItem>
-          <SidebarItem
-            path="/invoice"
-            textShow={showSidebar}
-            icon={<FaFileInvoice size={20} />}
-          >
-            Invoice
-          </SidebarItem>
-        </Sidebar>
-      </div>
+      <Sidebar>
+        <SidebarItem
+          path="/"
+          textShow={showSidebar}
+          icon={<LuLayoutDashboard size={20} />}
+        >
+          Deshboard
+        </SidebarItem>
+        <SidebarItem
+          path="/invoice"
+          textShow={showSidebar}
+          icon={<FaFileInvoice size={20} />}
+        >
+          Invoice
+        </SidebarItem>
+      </Sidebar>
       <div className="border-color border-y">
         {userData &&
           (showSidebar ? (
@@ -53,7 +51,10 @@ const SidebarComp = () => {
                 <h4 className="font-semibold leading-5">
                   {userData?.displayName}
                 </h4>
-                <p className="text-xs text-gray-500">{userData?.email}</p>
+                <div className="relative w-32">
+                  <p className="text-xs text-gray-500">{userData?.email}</p>
+                  <div className="absolute right-0 top-0 h-full w-4 bg-gradient-to-r from-transparent to-gray-50 dark:to-gray-800"></div>
+                </div>
               </div>
               <Popover
                 className="con-bg border-color space-y-2 whitespace-nowrap rounded-lg border p-3 shadow"
@@ -142,6 +143,7 @@ const SidebarItem = ({ children, path, icon, textShow }) => {
     </li>
   );
 };
+
 SidebarItem.propTypes = {
   children: PropTypes.node,
   path: PropTypes.string,
