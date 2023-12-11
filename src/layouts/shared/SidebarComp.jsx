@@ -42,6 +42,7 @@ const SidebarComp = () => {
                 shape="circle"
                 size="md"
                 bordered={true}
+                className="object-cover object-center"
                 img={userData?.photoURL ? userData?.photoURL : null}
               />
               <div className="w-32 overflow-hidden">
@@ -82,6 +83,7 @@ const SidebarComp = () => {
                   shape="circle"
                   size="md"
                   bordered={true}
+                  className="object-cover object-center"
                   img={userData?.photoURL ? userData?.photoURL : null}
                 />
               </div>

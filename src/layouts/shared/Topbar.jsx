@@ -67,7 +67,7 @@ const UserLogged = ({ user, logout }) => {
       additionalContent={<ProfilePopover user={user} logout={logout} />}
     >
       <Avatar
-        className="cursor-pointer"
+        className="cursor-pointer object-cover object-center"
         shape="circle"
         size="md"
         bordered={true}

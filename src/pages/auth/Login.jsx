@@ -48,7 +48,7 @@ const Login = () => {
       if (data?.success) {
         const { user } = await login(e.email, e.password);
         if (!user?.emailVerified) {
-          await logout();
+          // await logout();
           const { isConfirmed } = await Alert.fire({
             icon: "warning",
             title: "Email not verified!",
