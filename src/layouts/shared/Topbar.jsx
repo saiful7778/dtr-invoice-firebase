@@ -65,7 +65,7 @@ const UserLogged = ({ user, logout }) => {
       position="bottom-end"
       additionalContent={
         <>
-          <div>{user.displayName}</div>
+          <div>{user?.displayName}</div>
           <div>
             <Link to="/dashboard">Dashboard</Link>
           </div>
@@ -84,7 +84,7 @@ const UserLogged = ({ user, logout }) => {
         shape="circle"
         size="md"
         bordered={true}
-        img={user?.photoURL ? user?.photoURL : ""}
+        img={user?.photoURL ? user?.photoURL : null}
       />
     </Popover>
   );
@@ -98,10 +98,13 @@ UserLogged.propTypes = {
 const UserLogout = () => {
   return (
     <>
-      <Link to="/login" className="btn btn-pri hidden">
+      <Link to="/account/login" className="btn btn-pri hidden">
         Login
       </Link>
-      <Link to="/register" className="btn btn-pri-outline max-sm:hidden">
+      <Link
+        to="/account/register"
+        className="btn btn-pri-outline max-sm:hidden"
+      >
         Register
       </Link>
     </>

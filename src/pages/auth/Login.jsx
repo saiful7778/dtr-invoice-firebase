@@ -8,8 +8,10 @@ import { loginSchema } from "../../schemas/auth";
 import errorStatus from "../../utilities/errorStatus";
 import Alert from "../../config/Alert";
 import { sendEmailVerification } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
   const { login, logout } = useAuth();
   const [spinner, setSpinner] = useState(false);
   const [showPass, setShowPass] = useState(false);
@@ -52,8 +54,8 @@ const Login = () => {
     }
   };
 
-  const handleForgetPassword = (e) => {
-    e();
+  const handleForgetPassword = () => {
+    navigate("/account/reset");
   };
 
   return (
@@ -75,6 +77,7 @@ const Login = () => {
                   className={
                     "input " + (error && touched ? "input-error " : "")
                   }
+                  autoComplete="username"
                   placeholder="Email address"
                   {...field}
                 />
@@ -92,6 +95,7 @@ const Login = () => {
                   className={
                     "input " + (error && touched ? "input-error " : "")
                   }
+                  autoComplete="current-password"
                   placeholder="Password"
                   {...field}
                 />
@@ -114,7 +118,7 @@ const Login = () => {
             )}
           </Field>
           <button
-            onClick={() => handleForgetPassword()}
+            onClick={handleForgetPassword}
             className="text-body-5 text-gray-400"
             type="button"
           >
@@ -131,7 +135,7 @@ const Login = () => {
       </Formik>
       <p className="mt-2 text-center text-body-5 text-gray-400">
         Don{`'`}t have an account?
-        <Link className="link ml-1" to="/register">
+        <Link className="link ml-1" to="/account/register">
           register
         </Link>
       </p>

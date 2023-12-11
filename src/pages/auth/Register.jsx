@@ -8,7 +8,7 @@ import { FaUserAstronaut } from "react-icons/fa";
 import { storage } from "../../firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import useAuth from "../../hooks/useAuth";
-import { updateProfile } from "firebase/auth";
+import { sendEmailVerification, updateProfile } from "firebase/auth";
 import Alert from "../../config/Alert";
 import errorStatus from "../../utilities/errorStatus";
 
@@ -168,6 +168,7 @@ const Register = () => {
                   className={
                     "input " + (error && touched ? "input-error " : "")
                   }
+                  autoComplete="username"
                   placeholder="Email address"
                   {...field}
                 />
@@ -185,6 +186,7 @@ const Register = () => {
                   className={
                     "input " + (error && touched ? "input-error " : "")
                   }
+                  autoComplete="new-password"
                   placeholder="Password"
                   {...field}
                 />
@@ -214,6 +216,7 @@ const Register = () => {
                   className={
                     "input " + (error && touched ? "input-error " : "")
                   }
+                  autoComplete="new-password"
                   placeholder="Confirm password"
                   {...field}
                 />
@@ -263,7 +266,7 @@ const Register = () => {
       </Formik>
       <p className="mt-2 text-center text-body-5 text-gray-400">
         Do you have an account?
-        <Link className="link ml-1" to="/login">
+        <Link className="link ml-1" to="/account/login">
           login
         </Link>
       </p>
@@ -278,10 +281,11 @@ const userRegister = async (register, userData, reset) => {
       displayName: userData.fullName,
       photoURL: userData?.profileLink,
     });
+    await sendEmailVerification(user);
     Alert.fire({
       icon: "success",
       title: "Account is created!",
-      text: `"${user.email}"`,
+      text: `"${user.email}" verify your email address.`,
     });
     reset();
   } catch (err) {

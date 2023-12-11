@@ -4,6 +4,7 @@ import Invoice from "../pages/Invoice";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import Terms from "../pages/info/Terms";
+import Reset from "../pages/auth/Reset";
 
 const route = createBrowserRouter([
   {
@@ -15,13 +16,23 @@ const route = createBrowserRouter([
         element: <Invoice />,
       },
       {
-        path: "/login",
-        element: <Login />,
+        path: "/account",
+        children: [
+          {
+            path: "login",
+            element: <Login />,
+          },
+          {
+            path: "register",
+            element: <Register />,
+          },
+          {
+            path: "reset",
+            element: <Reset />,
+          },
+        ],
       },
-      {
-        path: "/register",
-        element: <Register />,
-      },
+
       {
         path: "/terms_and_conditions",
         element: <Terms />,

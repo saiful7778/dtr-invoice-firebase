@@ -1,14 +1,13 @@
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
-  sendEmailVerification,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
 import PropTypes from "prop-types";
 import { createContext, useState, useEffect } from "react";
 import { auth } from "../firebase";
-import Alert from "../config/Alert";
 
 export const AuthContextData = createContext(null);
 
@@ -30,34 +29,37 @@ const AuthContext = ({ children }) => {
     return signOut(auth);
   };
 
+  const resetPassword = (email) => {
+    return sendPasswordResetEmail(auth, email);
+  };
+
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      setLoader(false);
       setUserData(currentUser);
-      if (currentUser) {
-        if (!currentUser?.emailVerified) {
-          await logout();
-          const { isConfirmed } = await Alert.fire({
-            icon: "warning",
-            title: "Email not verified!",
-            text: "Verify your email address.",
-            showCancelButton: true,
-            confirmButtonText: "Send email",
-            cancelButtonText: "Cancel",
-            reverseButtons: true,
-          });
-          if (isConfirmed) {
-            sendEmailVerification(currentUser);
-          }
-        }
-      }
+      // if (currentUser) {
+      //   if (!currentUser?.emailVerified) {
+      //     const { isConfirmed } = await Alert.fire({
+      //       icon: "warning",
+      //       title: "Email not verified!",
+      //       text: "Verify your email address.",
+      //       showCancelButton: true,
+      //       confirmButtonText: "Send email",
+      //       cancelButtonText: "Cancel",
+      //       reverseButtons: true,
+      //     });
+      //     if (isConfirmed) {
+      //       sendEmailVerification(currentUser);
+      //     }
+      //   }
+      // }
+      setLoader(false);
     });
     return () => {
       unSubscribe();
     };
   }, []);
 
-  const authInfo = { userData, register, login, logout, loader };
+  const authInfo = { userData, register, login, logout, resetPassword, loader };
   return (
     <AuthContextData.Provider value={authInfo}>
       {children}
