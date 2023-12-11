@@ -8,6 +8,11 @@ const StateComp = ({ children }) => {
    * false means light mode
    */
   const [theme, setTheme] = useState(localStorage.getItem("themeState"));
+  const [showSidebar, setShowSidebar] = useState(false);
+
+  const handleSiderBar = () => {
+    setShowSidebar((l) => !l);
+  };
 
   useEffect(() => {
     if (theme === "dark") {
@@ -27,7 +32,7 @@ const StateComp = ({ children }) => {
       document.body.classList.add("dark");
     }
   };
-  const allData = { theme, handleThemeChange };
+  const allData = { theme, handleThemeChange, showSidebar, handleSiderBar };
   return <StateData.Provider value={allData}>{children}</StateData.Provider>;
 };
 

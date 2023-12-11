@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Spinner } from "keep-react";
 import { Link } from "react-router-dom";
 import { Field, Form, Formik } from "formik";
@@ -6,9 +6,11 @@ import { resetPasswordSchema } from "../../schemas/auth";
 import useAuth from "../../hooks/useAuth";
 import errorStatus from "../../utilities/errorStatus";
 import Alert from "../../config/Alert";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Reset = () => {
   const { resetPassword } = useAuth();
+  const recaptchaRef = useRef(null);
   const [spinner, setSpinner] = useState(false);
 
   const initialValues = {
@@ -17,12 +19,38 @@ const Reset = () => {
 
   const submitData = async (e, { resetForm }) => {
     setSpinner(true);
-    try {
-      await resetPassword(e.email);
+    const captchaValue = recaptchaRef.current.getValue();
+    if (!captchaValue) {
       Alert.fire({
-        icon: "info",
-        text: "The reset password email has been sent to your email address.",
+        icon: "warning",
+        text: "Please verify the reCAPTCHA!",
       });
+      return setSpinner(false);
+    }
+    try {
+      const res = await fetch(
+        "https://dtr-invoice-server.vercel.app/captcha/verify",
+        {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({ captchaValue }),
+        },
+      );
+      const data = await res.json();
+      if (data?.success) {
+        await resetPassword(e.email);
+        Alert.fire({
+          icon: "info",
+          text: "The reset password email has been sent to your email address.",
+        });
+      } else {
+        Alert.fire({
+          icon: "error",
+          text: "Invalid reCaptcha!",
+        });
+      }
       resetForm();
       setSpinner(false);
     } catch (err) {
@@ -62,6 +90,11 @@ const Reset = () => {
               </div>
             )}
           </Field>
+          <ReCAPTCHA
+            size="compact"
+            ref={recaptchaRef}
+            sitekey={import.meta.env.VITE_SITE_KEY}
+          />
           <button
             disabled={spinner}
             className="btn btn-pri w-full"
@@ -73,11 +106,11 @@ const Reset = () => {
       </Formik>
       <p className="mt-2 text-center text-body-5 text-gray-400">
         Do you want to
-        <Link className="link mx-1" to="/account/register">
+        <Link className="link mx-1" to="/manage/register">
           register
         </Link>
         or
-        <Link className="link mx-1" to="/account/login">
+        <Link className="link mx-1" to="/manage/login">
           login
         </Link>
       </p>

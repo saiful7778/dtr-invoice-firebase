@@ -279,7 +279,10 @@ const Register = () => {
                   <input className="leading-tight" type="checkbox" {...field} />
                   <p className="text-sm">
                     Terms and conditions
-                    <Link to="/terms_and_conditions" className="link ml-1">
+                    <Link
+                      to="/manage/terms_and_conditions"
+                      className="link ml-1"
+                    >
                       read
                     </Link>
                   </p>
@@ -291,6 +294,7 @@ const Register = () => {
             )}
           </Field>
           <ReCAPTCHA
+            size="compact"
             ref={recaptchaRef}
             sitekey={import.meta.env.VITE_SITE_KEY}
           />
@@ -305,7 +309,7 @@ const Register = () => {
       </Formik>
       <p className="mt-2 text-center text-body-5 text-gray-400">
         Do you have an account?
-        <Link className="link ml-1" to="/account/login">
+        <Link className="link ml-1" to="/manage/login">
           login
         </Link>
       </p>

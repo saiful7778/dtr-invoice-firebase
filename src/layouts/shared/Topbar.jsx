@@ -1,20 +1,23 @@
 import { LuMenuSquare, LuMoon, LuSun, LuMail } from "react-icons/lu";
 import useStateData from "../../hooks/useStateData";
 import siteLogo from "../../assets/img/icon/invoice-logo.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { Avatar, Popover } from "keep-react";
 import PropTypes from "prop-types";
 
 const Topbar = () => {
-  const { theme, handleThemeChange } = useStateData();
+  const { theme, handleThemeChange, handleSiderBar } = useStateData();
+  const location = useLocation();
   const { userData, logout } = useAuth();
   return (
     <div className="con-bg fixed left-0 top-0 z-[100] flex h-14 w-full items-center justify-between gap-2 border-b p-2 shadow">
       <div className="flex items-center gap-2">
-        <button className="btn-icon" type="button">
-          <LuMenuSquare size={25} strokeWidth={1} />
-        </button>
+        {!location.pathname.includes("manage") && (
+          <button onClick={handleSiderBar} className="btn-icon" type="button">
+            <LuMenuSquare size={25} strokeWidth={1} />
+          </button>
+        )}
 
         <Link className="flex items-center gap-2" to="/">
           <img
@@ -66,9 +69,6 @@ const UserLogged = ({ user, logout }) => {
       additionalContent={
         <>
           <div>{user?.displayName}</div>
-          <div>
-            <Link to="/dashboard">Dashboard</Link>
-          </div>
           <button
             onClick={handleLogout}
             className="btn btn-pri btn-sm w-full"
@@ -80,7 +80,7 @@ const UserLogged = ({ user, logout }) => {
       }
     >
       <Avatar
-        className="cursor-pointer rounded-full bg-gray-200"
+        className="cursor-pointer"
         shape="circle"
         size="md"
         bordered={true}
@@ -98,13 +98,10 @@ UserLogged.propTypes = {
 const UserLogout = () => {
   return (
     <>
-      <Link to="/account/login" className="btn btn-pri hidden">
+      <Link to="/manage/login" className="btn btn-pri hidden">
         Login
       </Link>
-      <Link
-        to="/account/register"
-        className="btn btn-pri-outline max-sm:hidden"
-      >
+      <Link to="/manage/register" className="btn btn-pri-outline max-sm:hidden">
         Register
       </Link>
     </>

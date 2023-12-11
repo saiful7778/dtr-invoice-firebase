@@ -84,7 +84,7 @@ const Login = () => {
   };
 
   const handleForgetPassword = () => {
-    navigate("/account/reset");
+    navigate("/manage/reset");
   };
 
   return (
@@ -154,6 +154,7 @@ const Login = () => {
             Forget password?
           </button>
           <ReCAPTCHA
+            size="compact"
             ref={recaptchaRef}
             sitekey={import.meta.env.VITE_SITE_KEY}
           />
@@ -168,7 +169,7 @@ const Login = () => {
       </Formik>
       <p className="mt-2 text-center text-body-5 text-gray-400">
         Don{`'`}t have an account?
-        <Link className="link ml-1" to="/account/register">
+        <Link className="link ml-1" to="/manage/register">
           register
         </Link>
       </p>
