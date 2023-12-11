@@ -5,6 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { Avatar, Popover } from "keep-react";
 import PropTypes from "prop-types";
+import ProfilePopover from "../../components/ProfilePopover";
 
 const Topbar = () => {
   const { theme, handleThemeChange, handleSiderBar } = useStateData();
@@ -57,27 +58,13 @@ const Topbar = () => {
 };
 
 const UserLogged = ({ user, logout }) => {
-  const handleLogout = () => {
-    logout();
-  };
   return (
     <Popover
-      className="con-bg border-color space-y-2 whitespace-nowrap rounded-lg border p-3 shadow"
+      className="con-bg border-color whitespace-nowrap rounded-lg border p-3 shadow"
       showDismissIcon={false}
       showArrow={false}
       position="bottom-end"
-      additionalContent={
-        <>
-          <div>{user?.displayName}</div>
-          <button
-            onClick={handleLogout}
-            className="btn btn-pri btn-sm w-full"
-            type="button"
-          >
-            Logout
-          </button>
-        </>
-      }
+      additionalContent={<ProfilePopover user={user} logout={logout} />}
     >
       <Avatar
         className="cursor-pointer"

@@ -6,14 +6,11 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import useStateData from "../../hooks/useStateData";
 import { Avatar, Popover } from "keep-react";
 import useAuth from "../../hooks/useAuth";
+import ProfilePopover from "../../components/ProfilePopover";
 
 const SidebarComp = () => {
   const { userData, logout } = useAuth();
   const { showSidebar } = useStateData();
-
-  const handleLogout = () => {
-    logout();
-  };
 
   return (
     <div
@@ -62,16 +59,7 @@ const SidebarComp = () => {
                 showArrow={false}
                 position="top-start"
                 additionalContent={
-                  <>
-                    <div>{userData?.displayName}</div>
-                    <button
-                      onClick={handleLogout}
-                      className="btn btn-pri btn-sm w-full"
-                      type="button"
-                    >
-                      Logout
-                    </button>
-                  </>
+                  <ProfilePopover user={userData} logout={logout} />
                 }
               >
                 <button className="btn-icon" type="button">
@@ -86,16 +74,7 @@ const SidebarComp = () => {
               showArrow={false}
               position="right"
               additionalContent={
-                <>
-                  <div>{userData?.displayName}</div>
-                  <button
-                    onClick={handleLogout}
-                    className="btn btn-pri btn-sm w-full"
-                    type="button"
-                  >
-                    Logout
-                  </button>
-                </>
+                <ProfilePopover user={userData} logout={logout} />
               }
             >
               <div className="w-full cursor-pointer p-2.5">
