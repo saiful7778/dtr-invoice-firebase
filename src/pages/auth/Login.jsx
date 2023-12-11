@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { Spinner } from "keep-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import { Field, Form, Formik } from "formik";
@@ -8,11 +8,11 @@ import { loginSchema } from "../../schemas/auth";
 import errorStatus from "../../utilities/errorStatus";
 import Alert from "../../config/Alert";
 import { sendEmailVerification } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { login, logout } = useAuth();
   const recaptchaRef = useRef(null);
   const [spinner, setSpinner] = useState(false);
@@ -66,6 +66,7 @@ const Login = () => {
             icon: "success",
             title: `Welcome, ${user.displayName}`,
           });
+          navigate(location.state ? location.state.from.pathname : "/");
         }
       } else {
         Alert.fire({

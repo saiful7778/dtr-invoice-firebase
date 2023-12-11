@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { Spinner } from "keep-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Field, Form, Formik } from "formik";
 import { registerSchema } from "../../schemas/auth";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
@@ -15,6 +15,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 
 const Register = () => {
   const { register } = useAuth();
+  const navigate = useNavigate();
   const recaptchaRef = useRef(null);
   const [spinner, setSpinner] = useState(false);
   const [showPass, setShowPass] = useState(false);
@@ -98,7 +99,7 @@ const Register = () => {
                   email: e.email,
                   pass: e.password,
                 };
-                userRegister(register, userData, reset);
+                userRegister(register, userData, reset, navigate);
               } catch (err) {
                 console.error(err);
                 Alert.fire({
@@ -115,7 +116,7 @@ const Register = () => {
             email: e.email,
             pass: e.password,
           };
-          userRegister(register, userData, reset);
+          userRegister(register, userData, reset, navigate);
         }
       } else {
         Alert.fire({
@@ -312,7 +313,7 @@ const Register = () => {
   );
 };
 
-const userRegister = async (register, userData, reset) => {
+const userRegister = async (register, userData, reset, navigate) => {
   try {
     const { user } = await register(userData.email, userData.pass);
     await updateProfile(user, {
@@ -326,6 +327,7 @@ const userRegister = async (register, userData, reset) => {
       text: `"${user.email}" verify your email address.`,
     });
     reset();
+    navigate("/");
   } catch (err) {
     errorStatus(err);
     reset();
