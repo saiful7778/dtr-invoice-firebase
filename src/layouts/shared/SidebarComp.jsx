@@ -22,14 +22,14 @@ const SidebarComp = () => {
         <SidebarItem
           path="/"
           textShow={showSidebar}
-          icon={<LuLayoutDashboard size={20} />}
+          icon={<LuLayoutDashboard />}
         >
           Deshboard
         </SidebarItem>
         <SidebarItem
           path="/invoice"
           textShow={showSidebar}
-          icon={<FaFileInvoice size={20} />}
+          icon={<FaFileInvoice />}
         >
           Invoice
         </SidebarItem>
@@ -95,7 +95,11 @@ const SidebarComp = () => {
 };
 
 const Sidebar = ({ children }) => {
-  return <ul className="flex w-full flex-col gap-2 p-2">{children}</ul>;
+  return (
+    <ul className="flex h-[50vh] w-full flex-grow flex-col gap-2 overflow-y-auto overflow-x-hidden p-2">
+      {children}
+    </ul>
+  );
 };
 
 Sidebar.propTypes = {
@@ -112,7 +116,8 @@ const SidebarItem = ({ children, path, icon, textShow }) => {
             : isActive
               ? "bg-gray-300 dark:bg-gray-700"
               : "ring-1 ring-gray-300 dark:ring-gray-700") +
-          " inline-flex w-full items-center overflow-hidden rounded-md px-3 py-2 font-medium duration-100"
+          " inline-flex w-full items-center overflow-hidden rounded-md px-3 py-2 font-medium duration-100" +
+          (!textShow ? " justify-center" : "")
         }
         to={path}
       >

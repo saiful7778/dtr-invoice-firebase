@@ -1,3 +1,4 @@
+@import url("./root.css");
 @import "keep-react/src/main.min.css";
 @import url("./utility.css");
 @tailwind base;

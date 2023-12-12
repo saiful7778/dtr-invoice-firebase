@@ -35,6 +35,7 @@ const AuthContext = ({ children }) => {
 
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      setLoader(false);
       setUserData(currentUser);
       // if (currentUser) {
       //   if (!currentUser?.emailVerified) {
@@ -52,7 +53,6 @@ const AuthContext = ({ children }) => {
       //     }
       //   }
       // }
-      setLoader(false);
     });
     return () => {
       unSubscribe();

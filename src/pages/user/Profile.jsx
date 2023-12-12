@@ -9,10 +9,16 @@ import { sendEmailVerification } from "firebase/auth";
 
 const Profile = () => {
   const { userData } = useAuth();
-  const { data: user, isLoading } = useQuery({
+  const {
+    data: user,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
     queryKey: [userData.displayName, "profile"],
     queryFn: async () => {
       const data = await getDoc(doc(db, "users", userData.uid));
+      console.log(userData);
       if (data.exists()) return data.data();
       return {};
     },
@@ -25,6 +31,13 @@ const Profile = () => {
       </div>
     );
   }
+
+  if (isError) {
+    console.log(error);
+    return <div className="text-center">Error</div>;
+  }
+
+  console.log(user);
 
   if (Object.keys(user).length === 0) {
     return <div className="text-center text-3xl font-bold">No Data Found!</div>;
